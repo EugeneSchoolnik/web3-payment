@@ -3,6 +3,8 @@ import { ethers } from "ethers"
 import db from "../db";
 import { clientError, errorHandler } from "../utils/Error";
 
+export const addressPool = (await db.query("SELECT address FROM addressPool") as any)[0].map(i => i.address)
+
 export const newAddress: Handler = async (req, res) => {
     try {
         const wallet = ethers.Wallet.createRandom();
