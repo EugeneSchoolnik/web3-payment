@@ -11,6 +11,6 @@ export const errorHandler = (e: any, res: Response) => {
     if (e.clientMessage)
         return res.status(e.status).json({ message: e.clientMessage })
 
-    console.log(e.message);
+    console.log(e);
     res.status(500).json({ error: e.message })
 }

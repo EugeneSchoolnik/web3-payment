@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "es2022",
+    "module": "CommonJS",
     "esModuleInterop": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
     // "allowJs": false
     "types": [
       "bun-types" // add Bun global

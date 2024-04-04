@@ -11,7 +11,7 @@ export const pay: Handler = async (req, res) => {
         if (amount == undefined) throw clientError(404, "Query parameter amount not found")
         if (redirect == undefined) throw clientError(404, "Query parameter redirect not found")
 
-        const payment = Payment.newPayment(symbol, Number(amount), redirect, req.userId)
+        const payment = Payment.newPayment(symbol, Number(amount), redirect, req.user.id)
 
         res.status(201).json({ data: payment })
 
