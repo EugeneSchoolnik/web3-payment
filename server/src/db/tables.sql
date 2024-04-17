@@ -1,0 +1,18 @@
+CREATE TABLE users (
+    id VARCHAR(16) NOT NULL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE addressPool (
+    address VARCHAR(42) NOT NULL PRIMARY KEY,
+    privateKey VARCHAR(66) NOT NULL
+);
+
+CREATE TABLE orders (
+    id VARCHAR(16) NOT NULL PRIMARY KEY,
+    userId VARCHAR(16) NOT NULL,
+    txHash VARCHAR(66),
+    symbol VARCHAR(16) NOT NULL,
+    status VARCHAR(16) NOT NULL
+);

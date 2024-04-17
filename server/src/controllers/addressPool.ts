@@ -1,22 +1,26 @@
 import { Handler } from "express";
-import { ethers } from "ethers"
-import db from "../db";
+import { ethers } from "ethers";
+import db from "../db/db";
 import { clientError, errorHandler } from "../utils/Error";
 
-export const addressPool = (await db.query("SELECT address FROM addressPool") as any)[0].map(i => i.address)
+export const addressPool = ((await db.query("SELECT address FROM addressPool")) as any)[0].map((i) => i.address);
 
 export const newAddress: Handler = async (req, res) => {
-    try {
-        const wallet = ethers.Wallet.createRandom();
-        const privateKey = wallet.privateKey
-        const address = wallet.address;
+  try {
+    const wallet = ethers.Wallet.createRandom();
+    const privateKey = wallet.privateKey;
 
-        const [result] = await db.execute("INSERT INTO addressPool (address, privateKey) VALUES (?, ?)", [address, privateKey]) as any
+    const address = wallet.address;
 
-        if (result.affectedRows !== 1) throw clientError(500, "Error while adding address")
+    const [result] = (await db.execute("INSERT INTO addressPool (address, privateKey) VALUES (?, ?)", [
+      address,
+      privateKey,
+    ])) as any;
 
-        res.status(201).json({ data: address })
-    } catch (e: any) {
-        errorHandler(e, res)
-    }
-}
+    if (result.affectedRows !== 1) throw clientError(500, "Error while adding address");
+
+    res.status(201).json({ data: address });
+  } catch (e: any) {
+    errorHandler(e, res);
+  }
+};

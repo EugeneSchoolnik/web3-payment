@@ -4,18 +4,24 @@ import { symbols } from "../services/payment/data";
 import Payment from "../services/payment/paymentsHandler";
 
 export const pay: Handler = async (req, res) => {
-    try {
-        const { symbol, amount, redirect } = req.query as { symbol: symbols, amount: string, redirect: string }
+  try {
+    const { symbol, amount, redirect, userId, network } = req.query as Record<string, string> & { symbol: symbols };
 
-        if (!symbols.find(i => i == symbol)) throw clientError(404, "Query parameter symbol not found")
-        if (amount == undefined) throw clientError(404, "Query parameter amount not found")
-        if (redirect == undefined) throw clientError(404, "Query parameter redirect not found")
+    if (!symbols.find((i) => i == symbol)) throw clientError(404, "Query parameter symbol not found");
+    if (amount == undefined) throw clientError(404, "Query parameter amount not found");
+    if (redirect == undefined) throw clientError(404, "Query parameter redirect not found");
+    if (userId == undefined) throw clientError(404, "Query parameter userId not found");
+    if (network !== "main" && network !== "test") throw clientError(400, "Invalid network");
 
-        const payment = Payment.newPayment(symbol, Number(amount), redirect, req.user.id)
+    // if (Number(amount) < 1 || Number(amount) > 5000)
+    //   throw clientError(400, "Payment amount should be from $1 to $5000");
 
-        res.status(201).json({ data: payment })
+    const payment = await Payment.new(symbol, Number(amount), redirect, userId, network);
 
-    } catch (e: any) {
-        errorHandler(e, res)
-    }
-}
+    if (typeof payment === "string") throw clientError(400, payment);
+
+    res.status(201).json({ data: payment });
+  } catch (e: any) {
+    errorHandler(e, res);
+  }
+};

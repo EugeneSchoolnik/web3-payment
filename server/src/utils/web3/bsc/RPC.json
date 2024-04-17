@@ -1,6 +1,6 @@
 {
     "bsc": {
         "main": "https://rpc.ankr.com/bsc",
-        "test": "https://bsc-testnet.public.blastapi.io"
+        "test": "https://bsc-testnet-rpc.publicnode.com"
     }
 }

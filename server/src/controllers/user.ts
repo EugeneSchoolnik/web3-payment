@@ -1,8 +1,8 @@
 import uniqid from "uniqid"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { Handler } from "../utils/express";
 import { clientError, errorHandler } from "../utils/Error";
-import db from "../db";
+import db from "../db/db";
 import { Response } from "express";
 import { IUser } from "../services/user/interface";
 
