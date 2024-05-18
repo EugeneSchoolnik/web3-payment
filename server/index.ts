@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import addressPool from "./src/routes/addressPool";
 import user from "./src/routes/user";
 import payment from "./src/routes/payment";
-import getAmountInUSDT from "./src/services/payment/getPaymentAmount";
 
 const app = express();
 const PORT = Bun.env.PORT || 3000;

@@ -4,13 +4,21 @@ import { addressPool } from "../../controllers/addressPool";
 import { IPayment, paymentStatus, paymentTime, symbols } from "./data";
 import { contractAddresses, ethersProviders } from "../../utils/web3/bsc";
 import db from "../../db/db";
+import { swap } from "./swap";
 
 class Payment {
   static payments: IPayment[] = [];
 
-  static async new(symbol: symbols, amount: number, redirect: string, userId: string, network: "main" | "test") {
-    const used = Payment.payments.filter((i) => i.symbol == symbol && i.amount == amount).map((i) => i.address);
-    const address = addressPool.find((i) => !used.includes(i));
+  static async new(
+    symbol: symbols,
+    amount: number,
+    amountInUSDT: number,
+    redirect: string,
+    userId: string,
+    network: "main" | "test"
+  ) {
+    const inUse = Payment.payments.filter((i) => i.symbol == symbol && i.amount == amount).map((i) => i.address);
+    const address = addressPool.find((i) => !inUse.includes(i.address)).address;
 
     if (!address) return "No available addresses";
 
@@ -26,6 +34,7 @@ class Payment {
     const payment: IPayment = {
       id,
       amount,
+      amountInUSDT,
       symbol,
       address,
       userId,
@@ -53,6 +62,7 @@ class Payment {
       if (to && to.toLowerCase() === payment.address.toLowerCase()) {
         if (Number(ethers.utils.formatUnits(value)) === payment.amount) {
           Payment.payments = Payment.payments.filter((i) => i.id !== payment.id);
+          swap(payment);
 
           const result: any = await db.execute("UPDATE orders SET txHash = ?, status = ? WHERE id = ?", [
             e.transactionHash || e.hash,
@@ -61,13 +71,15 @@ class Payment {
           ]);
           if (result[0] && result[0].affectedRows == 0) console.log("Error updating a successful order");
 
+          await Payment.updateUserBalance(payment);
+
           if (onBlock) provider.off("block", onBlock);
           else contract.off("Transfer", listener);
         }
       }
     };
 
-    const onBlock = payment.symbol == "BNB" ? await this.watchMainCurrency(provider, listener) : null;
+    const onBlock = payment.symbol == "BNB" ? await Payment.watchMainCurrency(provider, listener) : null;
 
     if (onBlock) provider.on("block", onBlock);
     else contract.on("Transfer", listener);
@@ -87,16 +99,10 @@ class Payment {
   }
 
   static async watchMainCurrency(provider: ethers.providers.JsonRpcProvider, listener: ethers.providers.Listener) {
-    let currentBlock = (await provider.getBlockNumber()) - 1;
+    const onBlock = async (number) => {
+      const { transactions } = await provider.getBlockWithTransactions(number);
 
-    const onBlock = async () => {
-      const block = await provider.getBlock(currentBlock++);
-      const transactions = block.transactions;
-
-      for (const txHash of transactions) {
-        const tx = await provider.getTransaction(txHash);
-        listener(tx.from, tx.to, tx.value, tx);
-      }
+      for (const tx of transactions) listener(tx.from, tx.to, tx.value, tx);
     };
 
     return onBlock;
@@ -114,6 +120,18 @@ class Payment {
     };
 
     setTimeout(checker, getDelta() / 2);
+  }
+
+  static async updateUserBalance(payment: IPayment) {
+    const fee = payment.symbol == "USDT" ? 0.005 : 0.015;
+    const amountFee = Math.max(payment.amountInUSDT * fee, 0.5);
+    const amount = Math.round((payment.amountInUSDT - amountFee) * 10 ** 4) / 10 ** 4;
+
+    const result: any = await db.execute("UPDATE users SET balance = balance + ? WHERE id = ?", [
+      amount,
+      payment.userId,
+    ]);
+    if (result[0] && result[0].affectedRows == 0) console.log("Error updating a user balance", payment.userId, amount);
   }
 }
 
