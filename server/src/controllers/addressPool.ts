@@ -3,7 +3,9 @@ import { ethers } from "ethers";
 import db from "../db/db";
 import { clientError, errorHandler } from "../utils/Error";
 
-export const addressPool: Record<'address' | 'privateKey', string>[] = ((await db.query("SELECT * FROM addressPool")) as any)[0].map((i) => ({
+export type wallet = Record<"address" | "privateKey", string>;
+
+export const addressPool: wallet[] = ((await db.query("SELECT * FROM addressPool")) as any)[0].map((i) => ({
   address: i.address,
   privateKey: i.privateKey,
 }));
@@ -21,7 +23,7 @@ export const newAddress: Handler = async (req, res) => {
     ])) as any;
 
     if (result.affectedRows !== 1) throw clientError(500, "Error while adding address");
-    addressPool.push({address, privateKey})
+    addressPool.push({ address, privateKey });
 
     res.status(201).json({ data: address });
   } catch (e: any) {
