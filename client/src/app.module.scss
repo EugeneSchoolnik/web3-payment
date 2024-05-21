@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+}
+
+.app {
+  background: $darkGray;
+  height: 100vh;
+
+  & > div {
+    height: 100%;
+  }
+}
+
+:global {
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0.5rem;
+
+      input:not([type="radio"]):not([type="checkbox"]) {
+        background: none;
+        width: 300px;
+        border-bottom: 2px solid $lightGray;
+        padding: 4px;
+        &:focus {
+          border-bottom: 2px solid $blue;
+        }
+      }
+      span {
+        color: $red;
+        font-size: 14px;
+        line-height: 14px;
+        height: 14px;
+        text-align: right;
+      }
+      i {
+        position: absolute;
+        right: 4px;
+        top: 33.5px;
+        padding: 4px;
+        cursor: pointer;
+        transform: translateY(-50%);
+      }
+    }
+    p {
+      background: $red;
+      padding: 4px;
+      width: 300px;
+      &:empty {
+        display: none;
+      }
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      text-align: center;
+      background: $dark2;
+      cursor: pointer;
+      transition: 150ms;
+      &:hover {
+        background: $blue;
+      }
+    }
+  }
+}
