@@ -23,12 +23,10 @@ class Payment {
     if (!address) return "No available addresses";
 
     const id = uniqid.time();
-    const [result]: any = await db.execute("INSERT INTO orders (id, userId, symbol, status) VALUES (?, ?, ?, ?)", [
-      id,
-      userId,
-      symbol,
-      paymentStatus.pending,
-    ]);
+    const [result]: any = await db.execute(
+      "INSERT INTO orders (id, userId, symbol, amount, status) VALUES (?, ?, ?, ?, ?)",
+      [id, userId, symbol, amountInUSDT, paymentStatus.pending]
+    );
     if (result && result.affectedRows !== 1) return "Database entry error";
 
     const payment: IPayment = {

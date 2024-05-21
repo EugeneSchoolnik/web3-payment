@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { pay } from "../controllers/payment";
+import { get, pay } from "../controllers/payment";
 
-const payment = Router()
+const payment = Router();
 
-payment.get("/pay", pay)
+payment.get("/pay", pay);
 
-export default payment
+payment.get("/get", get);
+
+export default payment;
