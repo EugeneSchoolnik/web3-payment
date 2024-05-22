@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import addressPool from "./src/routes/addressPool";
 import user from "./src/routes/user";
 import payment from "./src/routes/payment";
@@ -12,6 +13,7 @@ app
   // middlewares
   .use(express.json())
   .use(cookieParser())
+  .use(cors({ credentials: true, origin: Bun.env.CLIENT_HOST }))
 
   // routes
   .use("/addressPool", addressPool)

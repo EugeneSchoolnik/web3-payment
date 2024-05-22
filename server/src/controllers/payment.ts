@@ -54,3 +54,13 @@ export const get: Handler = async (req, res) => {
     errorHandler(e, res);
   }
 };
+
+export const paymentHistory: Handler = async (req, res) => {
+  try {
+    const result = await db.execute("SELECT * FROM orders WHERE userId = ?", [req.user.id]);
+
+    res.json(result[0]);
+  } catch (e) {
+    errorHandler(e, res);
+  }
+};

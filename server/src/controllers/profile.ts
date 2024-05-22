@@ -2,6 +2,8 @@ import { Handler } from "../utils/express";
 import { clientError, errorHandler } from "../utils/Error";
 import { findWallet, getBalance, sendUSDT } from "../services/profile/withdraw";
 import db from "../db/db";
+import jwt from "jsonwebtoken";
+import { setToken } from "./user";
 
 export const withdraw: Handler = async (req, res) => {
   try {
@@ -35,12 +37,15 @@ export const withdraw: Handler = async (req, res) => {
 
 export const getUserBalance: Handler = async (req, res) => {
   try {
-    let balance = await getBalance(req.user.id);
-    if (!balance) throw clientError(400, "Error get user balance");
+    req.user.balance = await getBalance(req.user.id);
+    if (!req.user.balance) throw clientError(400, "Error get user balance");
 
-    balance = Math.floor(balance * 10 ** 2) / 10 ** 2;
+    req.user.balance = Math.floor(req.user.balance * 10 ** 2) / 10 ** 2;
 
-    res.json({ data: balance });
+    const token = jwt.sign(req.user, Bun.env.JWT_SECRET);
+    setToken(res, token, 5 * 24 * 60 * 60 * 1000);
+
+    res.json({ data: req.user.balance });
   } catch (e) {
     errorHandler(e, res);
   }

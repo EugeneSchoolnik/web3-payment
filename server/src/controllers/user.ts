@@ -6,7 +6,7 @@ import db from "../db/db";
 import { Response } from "express";
 import { IUser } from "../services/user/interface";
 
-const setToken = (res: Response, token: string, maxAge: number) => {
+export const setToken = (res: Response, token: string, maxAge: number) => {
   res.cookie("authorization", token, { httpOnly: true, maxAge });
 };
 
@@ -31,7 +31,7 @@ export const register: Handler = async (req, res) => {
     const token = jwt.sign(user, Bun.env.JWT_SECRET, { expiresIn: "5d" });
 
     setToken(res, token, 5 * 24 * 60 * 60 * 1000);
-    res.status(201).json({ data: { user } });
+    res.status(201).json(user);
   } catch (e: any) {
     errorHandler(e, res);
   }
@@ -50,7 +50,7 @@ export const login: Handler = async (req, res) => {
     const token = jwt.sign(user, Bun.env.JWT_SECRET, { expiresIn: "5d" });
 
     setToken(res, token, 5 * 24 * 60 * 60 * 1000);
-    res.status(200).json({ data: { user } });
+    res.status(200).json(user);
   } catch (e: any) {
     errorHandler(e, res);
   }
@@ -58,7 +58,7 @@ export const login: Handler = async (req, res) => {
 
 export const getMe: Handler = async (req, res) => {
   try {
-    res.status(200).json({ data: { user: req.user } });
+    res.status(200).json(req.user);
   } catch (e: any) {
     errorHandler(e, res);
   }
@@ -70,8 +70,8 @@ export const auth: Handler = async (req, res, next) => {
     if (!token) throw clientError(401, "Token expired");
 
     try {
-      const { id, email, balance } = jwt.verify(token, Bun.env.JWT_SECRET) as IUser;
-      req.user = { id, email, balance };
+      const user = jwt.verify(token, Bun.env.JWT_SECRET) as IUser;
+      req.user = user;
 
       next();
     } catch {
