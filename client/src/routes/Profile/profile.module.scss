@@ -1,0 +1,134 @@
+.profile {
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: $gray;
+    div {
+      &:first-child {
+        display: flex;
+        flex-direction: column;
+      }
+      &:last-child {
+        button {
+          &:first-child {
+            margin-right: 0.5rem;
+          }
+          &:last-child {
+            &:hover {
+              background: $red;
+            }
+          }
+        }
+      }
+    }
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    .balance {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      background: $light;
+      margin-bottom: 1rem;
+      i {
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 1rem;
+        font-size: 1.2rem;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        @keyframes loader {
+          from {
+            transform: rotateZ(0deg);
+          }
+          to {
+            transform: rotateZ(360deg);
+          }
+        }
+        &.anim {
+          animation: loader 1s linear infinite;
+        }
+      }
+    }
+    h2 {
+      font-size: 1.1rem;
+    }
+    ul {
+      margin-top: 1rem;
+      width: 720px;
+      height: calc(480px + 1rem);
+      list-style: none;
+      padding: 0.5rem;
+      border: 2px solid $lightGray;
+
+      li {
+        display: flex;
+        background: $dark2;
+        height: 32px;
+        padding: 4px 0.5rem;
+        margin-top: 4px;
+
+        &:first-child {
+          border-bottom: 2px solid $light2;
+          font-weight: bold;
+        }
+        span {
+          display: block;
+          &:first-child,
+          &:nth-child(2),
+          &:nth-child(3) {
+            width: 15%;
+          }
+          &:nth-child(4) {
+            width: 20%;
+          }
+          &:last-child {
+            width: 35%;
+            overflow-x: auto;
+            &::-webkit-scrollbar {
+              height: 4px;
+              background: $light;
+            }
+            &::-webkit-scrollbar-thumb {
+              background: $blue;
+            }
+          }
+        }
+        p {
+          width: 100%;
+          text-align: center;
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+  .withdraw {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: $dark;
+    form {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: $gray;
+      padding: 1rem;
+      h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        text-align: center;
+      }
+    }
+  }
+}

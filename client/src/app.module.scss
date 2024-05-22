@@ -77,4 +77,19 @@
       }
     }
   }
+
+  .btn {
+    padding: 0.5rem;
+    background: $dark;
+    text-align: center;
+    transition: 150ms;
+    cursor: pointer;
+    &:hover {
+      background: $dark2;
+    }
+
+    &.primary {
+      color: $blue;
+    }
+  }
 }
