@@ -1,0 +1,40 @@
+.home {
+  padding: 2rem;
+  h1 {
+    margin: 1.5rem 0;
+    font-size: 1.5rem;
+  }
+  & > p {
+    width: 80%;
+  }
+  h2 {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+  h3 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    text-decoration: underline 1px solid #fff;
+  }
+  .block {
+    padding: 0.5rem;
+    border: 1px solid $light;
+    margin: 0.5rem 0;
+  }
+  ul {
+    list-style: none;
+    padding: 5px;
+    li {
+      color: rgba(255, 255, 255, 0.75);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  span.link {
+    display: block;
+    margin: 5px 0;
+    padding: 5px;
+    background: $light;
+    color: $blue;
+    cursor: pointer;
+  }
+}
