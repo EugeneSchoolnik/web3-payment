@@ -81,3 +81,12 @@ export const auth: Handler = async (req, res, next) => {
     errorHandler(e, res);
   }
 };
+
+export const logout: Handler = async (req, res) => {
+  try {
+    setToken(res, "", 0);
+    res.send();
+  } catch (e: any) {
+    errorHandler(e, res);
+  }
+};
