@@ -13,6 +13,7 @@ export const withdraw: Handler = async (req, res) => {
     if (!balance) throw clientError(400, "Error get user balance");
 
     if (amount > balance) throw clientError(400, "Insufficient balance");
+    if (amount < 10) throw clientError(400, "Minimum withdrawal amount 10 USDT");
 
     const wallet = await findWallet(amount);
     if (typeof wallet == "string") throw clientError(400, wallet);

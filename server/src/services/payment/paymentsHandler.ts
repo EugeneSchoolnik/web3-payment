@@ -29,6 +29,9 @@ class Payment {
     );
     if (result && result.affectedRows !== 1) return "Database entry error";
 
+    redirect = redirect + (redirect.includes("?") ? "&" : "?") + `payment_id=${id}`;
+    redirect.slice(0, 4) !== "http" && (redirect = "http://" + redirect);
+
     const payment: IPayment = {
       id,
       amount,

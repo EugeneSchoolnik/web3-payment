@@ -44,10 +44,11 @@ export const get: Handler = async (req, res) => {
     const payment = (await db.execute("SELECT * FROM orders WHERE id = ?", [id]))[0][0];
     if (!payment) throw clientError(404, "Payment not found");
 
-    const tx = await ethersProviders.main.getTransaction(payment.txHash);
-    const block = await ethersProviders.main.getBlock(tx.blockNumber);
-
-    payment.timestamp = block.timestamp;
+    if (payment.txHash) {
+      const tx = await ethersProviders.main.getTransaction(payment.txHash);
+      const block = await ethersProviders.main.getBlock(tx.blockNumber);
+      payment.timestamp = block.timestamp;
+    }
 
     res.json(payment);
   } catch (e) {
