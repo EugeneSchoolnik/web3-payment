@@ -1,0 +1,88 @@
+.pay {
+  padding: 1rem;
+  .error {
+    text-align: center;
+    background: $red;
+    padding: 0.5rem;
+  }
+  .creating {
+    text-align: center;
+    background: $light;
+    padding: 0.5rem;
+  }
+  .payment {
+    position: relative;
+    width: 640px;
+    margin: 0 auto;
+    background: $dark2;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    span {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 27px;
+
+      o.address {
+        background: $light;
+        padding: 4px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+    .status {
+      margin: 3rem auto 0;
+      padding: 1rem;
+      text-transform: capitalize;
+      border-radius: 5px;
+
+      &.pending {
+        background: $blue;
+        @keyframes load {
+          from {
+            transform: rotateZ(0deg);
+          }
+          to {
+            transform: rotateZ(360deg);
+          }
+        }
+        i {
+          margin-left: 5px;
+          font-size: 1.2rem;
+          animation: load 1.5s linear infinite;
+        }
+      }
+      &.success {
+        background: $green;
+        font-weight: bold;
+      }
+      &.canceled {
+        background: $red;
+      }
+    }
+    .timer {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+      background: $blue;
+      padding: 0.5rem;
+      border-radius: 5px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  .goBack {
+    display: block;
+    width: 200px;
+    text-align: center;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    background: $light;
+    box-shadow: 0 0 4px 1px #000;
+    border-radius: 5px;
+    transition: 150ms;
+    &:hover {
+      box-shadow: 0 0 4px 1px $blue;
+    }
+  }
+}

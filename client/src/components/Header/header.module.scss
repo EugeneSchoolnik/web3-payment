@@ -1,0 +1,22 @@
+.header {
+  background: $dark2;
+  box-shadow: 0 1px 5px 1px #000;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+
+  a {
+    &.title {
+      padding: 1rem;
+      i {
+        margin-right: 0.25rem;
+      }
+    }
+    &.login {
+      margin-left: auto;
+      background: linear-gradient(60deg, $blue 50%, $green);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+  }
+}
