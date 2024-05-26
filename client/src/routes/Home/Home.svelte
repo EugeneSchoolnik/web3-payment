@@ -54,7 +54,7 @@
           alert("copied");
         }}
       >
-        http://localhost:5173/payment/get?id={"<payment_id>"}
+        http://localhost:3000/payment/get?id={"<payment_id>"}
       </span>
     </p>
     <p>Output (json):</p>
