@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { auth, getMe, login, logout, register } from "../controllers/user";
+import { auth, captcha, checkCaptcha, getMe, login, logout, register } from "../controllers/user";
 
 const user = Router();
 
@@ -8,6 +8,8 @@ user
   .post("/register", register)
   .post("/login", login)
   .get("/me", auth, getMe)
-  .get("/logout", logout);
+  .get("/logout", logout)
+  .get("/captcha", captcha)
+  .post("/captcha", checkCaptcha);
 
 export default user;
