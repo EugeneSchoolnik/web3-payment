@@ -6,6 +6,7 @@
   import server from "../../utils/axiosInstance";
   import { validate } from "../../utils/validate";
   import s from "./auth.module.scss";
+  import Captcha from "../../components/Captcha/Captcha.svelte";
 
   let isLogin = window.location.pathname == "/login";
   let isPassVisible = false;
@@ -13,6 +14,7 @@
   const data = {
     email: { value: "", error: "" },
     password: { value: "", error: "" },
+    captcha: { value: { hash: "", x: 0, status: false }, error: "" },
     error: "",
   };
 
@@ -26,7 +28,7 @@
   };
 
   const onSubmit = () => {
-    if (!checkData()) return;
+    if (!checkData() || !data.captcha.value.status) return;
 
     const Data = Object.fromEntries(Object.entries(data).map((i) => [i[0], (i[1] as any).value]));
     server
@@ -60,6 +62,7 @@
       </i>
       <span>{data.password.error}</span>
     </label>
+    <Captcha on:captcha={(e) => (data.captcha.value = e.detail)} />
     <p>{data.error}</p>
     <button>CONFIRM</button>
   </form>

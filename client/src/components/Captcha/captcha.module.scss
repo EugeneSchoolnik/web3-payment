@@ -1,0 +1,73 @@
+.captcha {
+  margin: 5px 0;
+  border: 1px solid $light;
+
+  .status {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    i {
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+    &.true i {
+      color: $green;
+    }
+    &.false i {
+      color: $red;
+    }
+  }
+  .captchaZone {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: $dark;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    .puzzleZone {
+      position: relative;
+      background: $darkGray;
+      padding: 0.5rem;
+      img {
+        background: #000;
+        &.puzzle {
+          position: absolute;
+          left: calc(var(--x) + 0.5rem);
+          top: calc(var(--y) + 0.5rem);
+          box-shadow: 0 0 2px 1px #fff5;
+        }
+      }
+      .btnZone {
+        width: 300px;
+        height: 40px;
+        position: relative;
+        margin-top: 0.5rem;
+
+        i {
+          width: 40px;
+          height: 40px;
+          background: $gray;
+          position: absolute;
+          left: var(--x);
+          top: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+        }
+      }
+      p {
+        width: max-content;
+        padding: 0.5rem;
+        margin: 0 auto;
+        background: $blue;
+        border-radius: 5px;
+      }
+    }
+  }
+}
